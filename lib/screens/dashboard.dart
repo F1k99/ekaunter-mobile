@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
 import '../text_style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -10,6 +11,18 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  String? _token;
+  @override
+  void initState() {
+    super.initState();
+    _loadToken();
+  }
+  Future<void> _loadToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _token = prefs.getString('token') ?? 'No token found';
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -43,11 +56,18 @@ class _DashboardPageState extends State<DashboardPage> {
             )
           ],
         ),
-        body: const SafeArea(
+        body: SafeArea(
           child: Column(
             children: <Widget>[
-              Text("Dashboard"),
-              Row(
+              const Text("Dashboard"),
+               Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Token: $_token',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              const Row(
                 children: <Widget>[
                   Text("Dashboard 2"),
                 ],

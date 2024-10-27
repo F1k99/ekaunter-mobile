@@ -1,33 +1,51 @@
-// models/user_model.dart
-class UserModel {
-  final int userId;
+class LoginResponse {
+  final String message;
+  final UserData userData;
+  final String token;
+
+  LoginResponse({
+    required this.message,
+    required this.userData,
+    required this.token,
+  });
+
+  factory LoginResponse.fromJson(Map<String, dynamic> json) {
+    return LoginResponse(
+      message: json['message'],
+      userData: UserData.fromJson(json['data']['userData']),
+      token: json['data']['token'],
+    );
+  }
+}
+
+class UserData {
+  final int usrId;
   final String name;
   final String username;
   final String email;
   final String role;
   final String status;
-  final String token;
+  final String avatar;
 
-  UserModel({
-    required this.userId,
+  UserData({
+    required this.usrId,
     required this.name,
     required this.username,
     required this.email,
     required this.role,
     required this.status,
-    required this.token,
+    required this.avatar,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    final userData = json['userData'];
-    return UserModel(
-      userId: userData['usr_id'] ?? 0,
-      name: userData['name'] ?? '',
-      username: userData['username'] ?? '',
-      email: userData['email'] ?? '',
-      role: userData['role'] ?? '',
-      status: userData['status'] ?? '',
-      token: json['token'] ?? '',
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    return UserData(
+      usrId: json['usr_id'],
+      name: json['name'],
+      username: json['username'],
+      email: json['email'],
+      role: json['role'],
+      status: json['status'],
+      avatar: json['avatar'] ?? '',
     );
   }
 }
